@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "84116816741",
+    "firebase_url": "https://mivotocolombia.firebaseio.com",
+    "project_id": "mivotocolombia",
+    "storage_bucket": "mivotocolombia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84116816741:android:b013a7db6ce182ae",
+        "android_client_info": {
+          "package_name": "com.nestnetgroup.mivotocolombia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84116816741-jm0f9q7s7rogbfbd3hil0p3g8eg38pi3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nestnetgroup.mivotocolombia",
+            "certificate_hash": "12e4a30973d8b22b4a3326ab8ca63e5d54b33387"
+          }
+        },
+        {
+          "client_id": "84116816741-fgli8109ilh5s48ckh6nloj96ibtvlrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClKFCBTBDevJihJmaxJaLu3MvauHkYp3g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84116816741-fgli8109ilh5s48ckh6nloj96ibtvlrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
