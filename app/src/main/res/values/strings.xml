@@ -17,5 +17,5 @@
     <string name="g_s_rh">G.S RH</string>
     <string name="registrar">Registrar</string>
     <string name="sexo">Sexo</string>
-    <string name="result_failed_why">Fallo en el scan</string>
+    <string name="result_failed_why">Scaner Cancelado</string>
 </resources>

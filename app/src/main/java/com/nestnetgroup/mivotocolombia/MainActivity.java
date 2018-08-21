@@ -1,88 +1,124 @@
 package com.nestnetgroup.mivotocolombia;
 
-
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import java.util.List;
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int barcode_req_code=200;
-    Button registro;
+    Button registro,login;
+    EditText email,password;
+    String HttpUrl = "http://monitorguardian.com/mivotocolombia/login.php";
+    RequestQueue requestQueue;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        requestQueue = Volley.newRequestQueue(MainActivity.this);
+        progressDialog = new ProgressDialog(MainActivity.this);
+
         registro= findViewById(R.id.buttonuno);
+        login= findViewById(R.id.buttonlogin);
+        email= findViewById(R.id.et_email);
+        password= findViewById(R.id.et_password);
+
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Codigo_Barra();
+                Intent intent= new Intent(MainActivity.this,BarcodeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
             }
         });
 
     }
 
-    private void Codigo_Barra(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,barcode_req_code);
-
+    public  String codificar(String text) throws UnsupportedEncodingException {
+        byte[] data = text.getBytes("UTF-8");
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+        return base64;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public  String decodificar(String text)  {
 
-        if(requestCode==barcode_req_code){
-
-            if(resultCode==RESULT_OK){
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                barcodeRecognition(photo);
-            }
-
+        byte[] data = Base64.decode(text, Base64.DEFAULT);
+        try {
+            text = new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+        return text;
     }
 
-    private void barcodeRecognition(Bitmap photo){
-        FirebaseVisionBarcodeDetectorOptions options = new FirebaseVisionBarcodeDetectorOptions.Builder().setBarcodeFormats(FirebaseVisionBarcode.FORMAT_PDF417).build();
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(photo);
-        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options);
-        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
-                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
+    public void login() {
+        progressDialog.setMessage("Porfavor spere....");
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUrl,
+                new Response.Listener<String>() {
                     @Override
-                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-                        for (FirebaseVisionBarcode barcode: barcodes) {
-                            String rawValue = barcode.getRawValue();
-                            Log.e("REPUESTA : "," REPUESTA F: "+rawValue);
-                            Toast.makeText(MainActivity.this,rawValue,Toast.LENGTH_SHORT).show();
+                    public void onResponse(String ServerResponse) {
+                        progressDialog.dismiss();
+                        if (ServerResponse.contains("exito")) {
+                            Toast.makeText(getApplicationContext(), "Login exitoso", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this,votacionActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(MainActivity.this, ServerResponse, Toast.LENGTH_LONG).show();
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                },
+                new Response.ErrorListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this,"Problemas con la lectura de la cedula",Toast.LENGTH_SHORT).show();
+                    public void onErrorResponse(VolleyError volleyError) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Problemas con la conexión", Toast.LENGTH_LONG).show();
                     }
-                });
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                try {
+                    String emailcodificado=codificar(email.getText().toString().trim());
+                    String passwordcodificado=codificar(password.getText().toString().trim());
+                    params.put("email", emailcodificado);
+                    params.put("password", passwordcodificado);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        requestQueue.add(stringRequest);
     }
+
 }

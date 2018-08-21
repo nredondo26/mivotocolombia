@@ -92,7 +92,7 @@ tools:context=".BarcodeActivity">
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombres" />
 
@@ -108,7 +108,7 @@ tools:context=".BarcodeActivity">
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintStart_toEndOf="@+id/fn" />
 
     <EditText
@@ -125,7 +125,7 @@ tools:context=".BarcodeActivity">
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
+        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/gs"
         app:layout_constraintTop_toBottomOf="@+id/nombres" />
@@ -145,7 +145,7 @@ tools:context=".BarcodeActivity">
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/email"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -154,12 +154,12 @@ tools:context=".BarcodeActivity">
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"

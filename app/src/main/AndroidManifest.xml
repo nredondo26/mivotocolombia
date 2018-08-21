@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".BarcodeActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,20 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="barcode" />
-
-        <activity android:name=".MainActivity" />
-        <activity
-            android:name=".scan"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".Scan_cedula_Activity"
-            android:screenOrientation="fullSensor"
-            tools:replace="screenOrientation" />
-        <activity android:name=".CedulaActivity"></activity>
+        <activity android:name=".BarcodeActivity" />
+        <activity android:name=".votacionActivity"></activity>
     </application>
 
 </manifest>
